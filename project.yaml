@@ -1,0 +1,312 @@
+project:
+  name: Decentralized Insurance Pool on Stellar
+  tagline: >
+    A decentralized mutual insurance marketplace powered by Stellar's fast settlement
+    and FBA-inspired consensus, enabling community-governed, transparent, low-cost
+    protection for underserved markets globally.
+  type: DeFi / Decentralized Insurance
+
+concept:
+  description: >
+    A community-funded risk-sharing protocol on the Stellar network where users
+    deposit stable assets into insurance pools, pay premiums, submit claims on-chain,
+    and a quorum of elected assessors validates claims via Soroban smart contracts.
+  combines:
+    - DeFi liquidity pools
+    - Decentralized governance
+    - Federated Byzantine Agreement (FBA)-style consensus
+    - Soroban smart contracts
+    - Stellar payments infrastructure
+  example:
+    pool: Crop Failure Pool
+    steps:
+      - Farmers contribute USDC into the pool
+      - Members pay monthly premiums
+      - Claim is submitted if drought damages crops
+      - Assessors vote; FBA quorum approves
+      - Soroban releases payout automatically
+
+why_stellar:
+  low_transaction_fees:
+    - Micro-premiums
+    - Small insurance pools
+    - Frequent voting
+  fast_settlement: Claims finalize in seconds
+  soroban_smart_contracts:
+    - Rust-based contracts
+    - On-chain automation
+    - Secure payout logic
+  built_in_asset_system:
+    - USDC
+    - Tokenized stablecoins
+    - Custom insurance shares
+  fba_alignment:
+    - Federated trust
+    - Validator quorum systems matching decentralized claim approval
+
+architecture:
+  frontend: React / Next.js DApp
+  smart_contracts: Soroban Smart Contracts
+  contracts:
+    - Insurance Pool Contract
+    - Claims Manager Contract
+    - Governance DAO Contract
+
+contracts:
+  pool_manager:
+    responsibilities:
+      - Create insurance pools
+      - Handle reserves
+      - Accept premiums
+      - Calculate APY
+      - Manage LP shares
+    storage:
+      Pool:
+        fields: [id, token, reserve_balance, premium_rate, total_members, claim_ratio]
+    features:
+      - Deposit USDC
+      - Withdraw liquidity
+      - Track reserve ratio
+      - Allocate funds per insurance category
+    example_pools:
+      - name: Crop Insurance
+        coverage: Weather disasters
+      - name: Health Pool
+        coverage: Medical emergencies
+      - name: SME Protection
+        coverage: Business losses
+      - name: Freight Insurance
+        coverage: Shipping damages
+
+  claims_engine:
+    responsibilities:
+      - Submit claims
+      - Attach metadata
+      - Trigger assessor voting
+      - Finalize claims
+    claim_lifecycle:
+      - PENDING
+      - UNDER_REVIEW
+      - APPROVED / REJECTED
+      - PAID
+
+  governance_dao:
+    responsibilities:
+      - Elect assessors
+      - Update quorum rules
+      - Change premium percentages
+      - Emergency pause
+
+  reputation_engine:
+    tracks:
+      - Assessor accuracy
+      - Fraud attempts
+      - Historical participation
+    penalties:
+      - Lose stake
+      - Lose voting power
+
+fba_quorum:
+  description: >
+    Trusted assessors are elected, vote on claims, and a quorum threshold
+    determines approval. Inspired by Stellar consensus.
+  example:
+    total_assessors: 10
+    minimum_quorum: 7
+    approval_threshold: "5/7"
+  logic:
+    approve_if:
+      - condition: "Region_A >= 3 approvals AND Region_B >= 2 approvals"
+      - condition: "Global quorum >= 7"
+  assessor_properties:
+    - Belongs to trust groups
+    - Signs claim approvals
+    - Contributes to quorum slices
+
+contract_functions:
+  - fn create_pool()
+  - fn deposit_liquidity()
+  - fn pay_premium()
+  - fn submit_claim()
+  - fn vote_claim()
+  - fn finalize_claim()
+  - fn payout_claim()
+  - fn elect_assessor()
+
+folder_structure:
+  root: stellar-insurance-pool/
+  contracts:
+    pool_manager:
+      src: [lib.rs, storage.rs, deposit.rs, withdraw.rs, premium.rs, events.rs]
+    claims_engine:
+      src: [lib.rs, claims.rs, voting.rs, payout.rs, evidence.rs, quorum.rs]
+    governance_dao:
+      src: [proposals.rs, voting.rs, assessors.rs, treasury.rs]
+    reputation_engine:
+      src: [scoring.rs, slashing.rs, rewards.rs]
+  frontend:
+    dirs: [app, components, hooks, pages, services, wallet, utils]
+  backend:
+    dirs: [indexer, analytics, assessor-api, fraud-monitor]
+  sdk:
+    dirs: [js, rust]
+  scripts: [deploy.sh, seed-data.ts, initialize.ts]
+  docs: [architecture.md, quorum-model.md, security.md, tokenomics.md]
+
+tech_stack:
+  smart_contracts: Rust + Soroban SDK
+  frontend: Next.js
+  wallet: Freighter
+  backend: Node.js / NestJS
+  database: PostgreSQL
+  indexing: RPC + custom indexer
+  file_storage: IPFS
+  analytics: Grafana
+  monitoring: Prometheus
+
+tokenomics:
+  lp_token:
+    symbol: iUSDC
+    represents:
+      - Reserve ownership
+      - Premium yield share
+  governance_token:
+    symbol: INSURE
+    used_for:
+      - Voting
+      - Staking
+      - Assessor elections
+
+claim_flow:
+  step1_join_pool:
+    - Deposit premium
+    - Receive coverage NFT/policy token
+  step2_incident:
+    - Submit claim amount, description, evidence hash
+    - Stored on IPFS and Stellar metadata
+  step3_assessors_vote:
+    - Review evidence
+    - Vote approve/reject (stored on-chain)
+  step4_quorum_reached:
+    - claim.status = APPROVED
+  step5_payout:
+    - Transfer stablecoin payout
+    - Update reserves
+
+security:
+  assessor_staking:
+    bad_behavior_penalties:
+      - Slash stake
+      - Remove voting rights
+  anti_fraud:
+    risk_scoring:
+      analyze: [claim frequency, wallet behavior, duplicate evidence]
+    delayed_finalization:
+      large_claims: Require additional quorum rounds
+    treasury_safeguards:
+      emergency_multisig: Pauses payouts during attacks
+
+database:
+  claims_table:
+    fields:
+      id: UUID
+      claimant: Address
+      amount: Decimal
+      status: Enum
+      approvals: Integer
+      created_at: Timestamp
+
+frontend_features:
+  user_dashboard:
+    - Active policies
+    - Premium history
+    - Submitted claims
+    - Payout history
+  assessor_dashboard:
+    - Pending claims
+    - Voting queue
+    - Assessor reputation
+    - Rewards earned
+  governance:
+    - Premium adjustments
+    - Quorum percentages
+    - Assessor onboarding
+    - Treasury allocations
+
+revenue_model:
+  premium_fees: 2–5% protocol fee
+  investment_yield: Unused reserves deployed into low-risk yield vaults
+  governance_fees: Proposal submission fees
+
+roadmap:
+  phase1_mvp:
+    - Pool deposits
+    - Premium payments
+    - Basic claims
+    - Manual assessor voting
+  phase2_dao_governance:
+    - Assessor elections
+    - Quorum customization
+    - Staking/slashing
+  phase3_fraud_detection:
+    - AI fraud analysis
+    - Reputation scoring
+    - Anomaly detection
+  phase4_multi_pool:
+    - Specialized insurance pools
+    - Reinsurance layers
+    - Cross-pool liquidity
+
+milestones:
+  month1:
+    - Soroban setup
+    - Pool contract
+    - Token integration
+  month2:
+    - Claims engine
+    - Voting logic
+    - Frontend MVP
+  month3:
+    - DAO governance
+    - Staking/slashing
+    - Security audit
+  month4:
+    - Testnet launch
+    - Liquidity incentives
+    - Beta users
+
+mvp_minimal:
+  smart_contracts:
+    - Pool contract
+    - Claim voting contract
+  frontend:
+    - Deposit page
+    - Claim submission
+    - Voting interface
+  backend:
+    - IPFS uploader
+    - Notification service
+
+advanced_features:
+  parametric_insurance:
+    triggers: [weather APIs, oracle data, flight delays]
+  nft_policies: Transferable NFT coverage certificates
+  reinsurance_pools: Pools insure other pools
+
+use_cases:
+  - sector: Agriculture
+    usage: Crop failure insurance
+  - sector: Logistics
+    usage: Shipment insurance
+  - sector: Healthcare
+    usage: Emergency medical funds
+  - sector: Freelancing
+    usage: Income protection
+  - sector: SMEs
+    usage: Business interruption coverage
+
+integrations:
+  - Circle USDC
+  - Lobstr wallet
+  - Freighter wallet
+  - Pinata (evidence storage)
